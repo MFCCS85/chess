@@ -18,7 +18,11 @@ Piece b_bishop = {BISHOP, BLACK};
 Piece b_queen = {QUEEN, BLACK};
 Piece b_king = {KING, BLACK};
 
+enum COLOR turn = WHITE;
+
 Piece board[8][8];
+int black_pawns_moved[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+int white_pawns_moved[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 const char piece_symbols[2][6] = {
     {'p', 'r', 'n', 'b', 'q', 'k'}, // BLACK
@@ -90,4 +94,40 @@ void move_to(Coord from, Coord to) {
   }
 }
 
-// Coord *notation_to_coords(char *notation) {}
+int pawn_moved(int col) {
+  switch (turn) {
+  case WHITE:
+    return white_pawns_moved[col];
+    break;
+  case BLACK:
+    return black_pawns_moved[col];
+    break;
+  }
+}
+
+Coord algebraic_to_coord(char *s) {
+  // e4 -> {3, 3}
+  int col = s[0] - 31;
+  int row = s[1] - 31;
+
+  Coord coord = {row, col};
+
+  return coord;
+}
+
+Coord *notation_to_coords(char *notation) {
+  int length = strlen(notation);
+
+  Coord from;
+  Coord to;
+  Coord *coords;
+
+  // PAWN
+  if (length == 2) {
+    Coord to = algebraic_to_coord(notation);
+    if (pawn_moved(to.col))
+      coords[1] = to;
+  }
+
+  return coords;
+}

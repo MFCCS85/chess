@@ -8,11 +8,13 @@ typedef struct {
 } Piece;
 
 typedef struct {
-  int col;
   int row;
+  int col;
 } Coord;
 
+extern int pawns_moved[16];
 extern Piece board[8][8];
+extern enum COLOR turn;
 
 void add_piece(Piece piece, Coord coord);
 void remove_piece(Coord coord);
@@ -23,3 +25,5 @@ void move_to(Coord from, Coord to);
 
 void init_board();
 void print_board(enum COLOR color);
+
+Coord algebraic_to_coord(char *s);
